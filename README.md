@@ -6,7 +6,7 @@ A React Native + Expo mobile app that helps users fall asleep faster and wake up
 
 ### Core Features
 - **AI-Personalized Sleep Sound Mixer** - Mood-based sound profiles with customizable intensity
-- **Smart Alarm - Wake-up experience with personalized messages
+- **Smart Alarm** - Wake-up experience with personalized messages
 - **AI Sleep Journal + Insights** - Track sleep patterns and get AI-generated recommendations
 - **Sleep Routine Recommender** - Daily AI tips based on sleep data analysis
 
