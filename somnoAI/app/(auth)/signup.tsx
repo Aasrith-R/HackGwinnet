@@ -1,0 +1,150 @@
+import React, { useState } from 'react';
+import { StyleSheet, TextInput, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
+import { Link, useRouter } from 'expo-router';
+import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
+import GradientBackground from '@/components/ui/GradientBackground';
+import SoftCard from '@/components/ui/SoftCard';
+import { supabase } from '@/lib/supabase';
+import { Spacing, Palette } from '@/constants/theme';
+
+export default function SignUp() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
+  const handleSignUp = async () => {
+    try {
+      setError(null);
+      setLoading(true);
+      
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+      
+      // Redirect to signin after successful signup
+      router.replace('/(auth)/signin');
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <GradientBackground variant="home">
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}
+      >
+        <ThemedView style={styles.content}>
+          <ThemedText type="title" style={styles.title}>Create Account 🌟</ThemedText>
+          <ThemedText style={styles.subtitle}>Start your journey to better sleep</ThemedText>
+
+          <SoftCard style={styles.form}>
+            <TextInput
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+              keyboardType="email-address"
+              style={styles.input}
+              placeholderTextColor="#94A3B8"
+            />
+            <TextInput
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              style={styles.input}
+              placeholderTextColor="#94A3B8"
+            />
+
+            {error && (
+              <ThemedText style={styles.error}>{error}</ThemedText>
+            )}
+
+            <ThemedView 
+              style={[styles.button, loading && styles.buttonDisabled]}
+              onTouchEnd={!loading ? handleSignUp : undefined}
+            >
+              {loading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <ThemedText style={styles.buttonText}>Create Account</ThemedText>
+              )}
+            </ThemedView>
+          </SoftCard>
+
+          <Link href="/(auth)/signin" asChild>
+            <ThemedText style={styles.link}>
+              Already have an account? Sign in
+            </ThemedText>
+          </Link>
+        </ThemedView>
+      </KeyboardAvoidingView>
+    </GradientBackground>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+    padding: Spacing.xl,
+    justifyContent: 'center',
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: Spacing.sm,
+  },
+  subtitle: {
+    textAlign: 'center',
+    marginBottom: Spacing.xl,
+    opacity: 0.8,
+  },
+  form: {
+    gap: Spacing.md,
+    padding: Spacing.lg,
+  },
+  input: {
+    height: 50,
+    borderRadius: 12,
+    backgroundColor: '#F8FAFC',
+    paddingHorizontal: Spacing.md,
+    fontSize: 16,
+    color: '#1E293B',
+  },
+  button: {
+    height: 50,
+    borderRadius: 12,
+    backgroundColor: Palette.lavender,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: Spacing.sm,
+  },
+  buttonDisabled: {
+    opacity: 0.7,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  error: {
+    color: '#EF4444',
+    textAlign: 'center',
+  },
+  link: {
+    textAlign: 'center',
+    marginTop: Spacing.xl,
+    color: Palette.lavender,
+  },
+});
