@@ -4,6 +4,7 @@ import { ThemedText } from '@/components/themed-text';
 import SoftCard from '@/components/ui/SoftCard';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ThemedView } from '@/components/themed-view';
+import DevTools from '@/components/DevTools';
 
 export default function SettingsScreen() {
   return (
@@ -13,6 +14,13 @@ export default function SettingsScreen() {
         <SoftCard style={styles.card}>
           <ThemedText type="subtitle">Preferences</ThemedText>
         </SoftCard>
+        
+        {__DEV__ && (
+          <SoftCard style={styles.devCard}>
+            <ThemedText type="subtitle" style={styles.devTitle}>Development Tools</ThemedText>
+            <DevTools />
+          </SoftCard>
+        )}
       </ScrollView>
     </ThemedView>
   );
@@ -32,5 +40,15 @@ const styles = StyleSheet.create({
   },
   card: {
     marginTop: 20,
+  },
+  devCard: {
+    marginTop: 20,
+    backgroundColor: '#fef3c7',
+    borderColor: '#f59e0b',
+    borderWidth: 1,
+  },
+  devTitle: {
+    color: '#92400e',
+    marginBottom: 10,
   },
 });
