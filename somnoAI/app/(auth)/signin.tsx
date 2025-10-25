@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import GradientBackground from '@/components/ui/GradientBackground';
 import SoftCard from '@/components/ui/SoftCard';
+import DevBypassButton from '@/components/DevBypassButton';
 import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/lib/auth-context';
+import { mockUser } from '@/lib/mockAuth';
 import { Spacing, Palette } from '@/constants/theme';
 
 export default function SignIn() {
@@ -13,6 +16,7 @@ export default function SignIn() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { setDevUser } = useAuth();
 
   const handleSignIn = async () => {
     try {
@@ -32,8 +36,16 @@ export default function SignIn() {
     }
   };
 
+  const handleDevBypass = () => {
+    console.log('🚀 Development: Bypassing authentication');
+    // Set mock user in auth context
+    setDevUser(mockUser);
+    // The AuthGuard will automatically redirect to /(tabs) when it sees the user
+  };
+
   return (
     <GradientBackground variant="home">
+      <DevBypassButton onBypass={handleDevBypass} />
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}

@@ -10,6 +10,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import GradientBackground from '@/components/ui/GradientBackground';
 import theme from '@/constants/theme';
 import { AuthProvider, useAuth } from '@/lib/auth-context';
+import { DevAuthProvider } from '@/lib/devAuthContext';
 
 // Auth guard component to handle protected routes
 function AuthGuard({ children }: { children: React.ReactNode }) {
@@ -56,20 +57,22 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <GestureHandlerRootView style={styles.root}>
-        <ThemeProvider value={navTheme}>
-          <AuthGuard>
-            <GradientBackground variant={colorScheme === 'dark' ? 'sleep' : 'wake'}>
-              <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="index" redirect />
-                <Stack.Screen name="(auth)" />
-                <Stack.Screen name="(tabs)" />
-              </Stack>
-              <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-            </GradientBackground>
-          </AuthGuard>
-        </ThemeProvider>
-      </GestureHandlerRootView>
+      <DevAuthProvider>
+        <GestureHandlerRootView style={styles.root}>
+          <ThemeProvider value={navTheme}>
+            <AuthGuard>
+              <GradientBackground variant={colorScheme === 'dark' ? 'sleep' : 'wake'}>
+                <Stack screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="index" redirect />
+                  <Stack.Screen name="(auth)" />
+                  <Stack.Screen name="(tabs)" />
+                </Stack>
+                <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+              </GradientBackground>
+            </AuthGuard>
+          </ThemeProvider>
+        </GestureHandlerRootView>
+      </DevAuthProvider>
     </AuthProvider>
   );
 }
