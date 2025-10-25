@@ -16,7 +16,6 @@ A React Native + Expo mobile app that helps users fall asleep faster and wake up
 - AsyncStorage for local data persistence
 - AI functions for reliable demo experience
 - Beautiful UI with gradients and smooth animations
-- Chart visualization for sleep data trends
 
 ## 📱 App Structure
 
@@ -30,7 +29,6 @@ A React Native + Expo mobile app that helps users fall asleep faster and wake up
 ### Components
 - **MoodSelector** - Dropdown for selecting current mood
 - **SoundMixer** - Audio playback controls with AI-generated profiles
-- **WeatherCard** - Weather display with mock data
 - **InsightCard** - AI-generated insights and recommendations
 - **SleepJournal** - Sleep data input and visualization
 
